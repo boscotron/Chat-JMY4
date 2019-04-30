@@ -1,3 +1,5 @@
+.firebaserc
+functions/config/key.js
 # Logs
 logs
 *.log
