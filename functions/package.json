@@ -3,8 +3,8 @@
   "description": "Cloud Functions for Firebase",
   "dependencies": {
     "@google-cloud/language": "^1.1.0",
-    "body-parser": "^1.18.3",
-    "comsis_jmy": "^1.0.19041703",
+    "body-parser": "^1.19.0",
+    "comsis_jmy": "^1.0.19043003",
     "consolidate": "^0.15.1",
     "cook": "^0.5.2",
     "cookie-encrypter": "^1.0.1",
