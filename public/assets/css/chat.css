@@ -1,0 +1,14 @@
+.scroll-perso{
+    height: 300px;
+    overflow: auto;
+}
+
+.scroll-perso::-webkit-scrollbar{
+    width: 7px;
+}
+
+.scroll-perso::-webkit-scrollbar-thumb {
+	
+    background: rgb(131, 118, 116,.8);
+	border-radius: 5px;
+}

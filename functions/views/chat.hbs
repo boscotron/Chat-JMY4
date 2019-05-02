@@ -1,0 +1,74 @@
+{{out.ola}}
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card card-chat">
+                    <div class="card-header">
+                        <h4 class="card-title">Chat</h4>
+                        <p class="category">Con Treisi Mishel</p>
+                    </div>
+                    <div class="card-content scroll-perso" >
+                        <ol class="chat " > 
+                            <li class="other">
+                                <div class="avatar XD">
+                                    <img src="{{head.cdn}}assets/img/favicon.png" alt="crash"/>
+                                </div>
+                                <div class="msg">
+                                    <p>
+                                        Como estas?
+                                    </p>
+                                    <div class="card-footer">
+                                        <i class="ti-check"></i>
+                                        <h6>11:20</h6>
+                                    </div>
+                                </div>
+                            </li>                           
+                            <li class="self">
+                                <div class="msg">
+                                    <p>
+                                        Que onda!!, como va todo?.
+                                    </p>
+                                    <div class="card-footer">
+                                        <i class="ti-check"></i>
+                                        <h6>11:25</h6>
+                                    </div>
+                                </div>
+                                <div class="no-avatar"></div>
+                            </li>
+                            <li class="self" id="mensaje-ultimo">
+                                <div class="msg">
+                                    <p>
+                                        mensaje de prueba!
+                                    </p>
+                                    <div class="card-footer">
+                                        <i class="ti-check"></i>
+                                        <h6>11:25</h6>
+                                    </div>
+                                </div>
+                                <div class="avatar" id="quitar-rebaba">
+                                    <img src="{{usuario.foto}}" id="foto-perfil" alt="crash"/>
+                                </div>
+                            </li>
+                        </ol>
+                        <hr>
+                        
+                    </div>
+                    <div class="card-contenet">
+                        <div class="send-message">
+                            <div class="avatar">
+                                <img src="{{usuario.foto}}" alt="crash"/>
+                            </div>
+                            <input class="form-control textarea" type="text" id="mensaje" placeholder="Type here!"/>
+                            <div class="send-button">
+                                <button class="btn btn-primary btn-fill" id="send">Send</button>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
