@@ -19,8 +19,8 @@ const envioMensaje= require('../controller/cchat');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-const firebaseApp = firebase.initializeApp(functions.config().firebase);
-var db = firebaseApp.database(); 
+/*const firebaseApp = firebase.initializeApp(functions.config().firebase);
+var db = firebaseApp.database(); */
 router.use(jmy.co);
 
 
@@ -36,66 +36,136 @@ router.get('/login', function(req, res, next) {
     res.render('login');      
 });
 
+/*
+
+Funciones:
+
+POST /chat presenta una lista de chats activos
+POST /chat/userid
 
 
-
-router.post('/chat',jmy.sesion(jmy_connect.key), async(req, res)=>{
-
-//let data = jmy.context(req);  
-const post = req.body;
-  let acceso = req.accesos
-
-  
+*/
 
 
-   try {
-     //post y acceso son datos de servidor 
-    //console.log("mensaje",post);
-    //console.log("acceso",acceso);
+router.get('/tkn',jmy.sesion(jmy_connect.key), async(req, res)=>{
+  try{
+    res.send(JSON.stringify(req.accesos));
+  } catch(error){
+    console.error(error);
     
-    envioMensaje.enviar(post,firebaseApp,db);  
-    //res.send(JSON.stringify({post:post}));
+  }
+});
+
+router.post('/chat/:idUsuario',jmy.sesion(jmy_connect.key), async(req, res)=>{
+  try {
+    const post = (typeof req.body == "string") ? JSON.parse(req.body):{};
+      let acceso = req.accesos;
+   
+  if(typeof post.mensaje == 'string')
+    envioMensaje.guardar({
+      idUsuario:req.params.idUsuario,
+      mensaje:post.mensaje,
+      fecha:Date.now(),
+      estado:'espera'
+    },acceso).then(function (respuesta,error) {
+
+      res.send(JSON.stringify({
+        fn:'guardar',
+        chat:respuesta,
+        post:post,
+        out:respuesta,
+        idUsuario:req.params.idUsuario
+      }));
+
+    });
+  else
+    envioMensaje.ver({
+      idUsuario:req.params.idUsuario
+    },acceso).then(function (respuesta,err) {
+      if(err)
+        console.error(err);
+        
+      res.send(JSON.stringify({
+        fn:'ver',
+        chat:respuesta,
+        post:post,
+        out:respuesta,
+        idUsuario:req.params.idUsuario
+      }));
+
+    });
+
    } catch(error) {
-     console.log('Error detecting sentiment or saving message', error.message);
+     console.error('Error detecting sentiment or saving message', error);
      res.sendStatus(500);
    }
   
  });
 
+ let array = [];
+ let object = {};
+ let string = '';
+
+router.get('/chat/:peticion',jmy.sesion(jmy_connect.key), async(req, res)=>{
+ const foto_usr = req.accesos.user_info.url_foto;
+  try {
+    let accesos = req.accesos;
+    let data = jmy.context(req);
+    const id = req.params.peticion || '';
+
+    data = jmy.context(req,{
+        css:[
+          {url:data.head.cdn+'assets/css/chat.css'},
+          {url:"//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"}
+        ],
+        js:[
+          {url:"//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"},
+          {url:"//www.gstatic.com/firebasejs/5.10.0/firebase.js"}
+        ]
+      });
+      
+    console.log(foto_usr);
+    data.head['templet']='listaChat';
+
+        data.carga.js.push({url:data.head.cdn+'assets/js/jmy/jqchat.js?d='+Date.now()});
+        data.head.title = "chat";
+        data.head.templet = "chat";
+        data.out['id']=id;
+        
+    res.render(data.head.templet,data);
+  } catch(error) {
+    console.error('Error detecting sentiment or saving message', error);
+    res.sendStatus(500);
+  }
+ 
+});
 
 router.get('/chat',jmy.sesion(jmy_connect.key), async(req, res)=>{
  const foto_usr = req.accesos.user_info.url_foto;
   try {
     let accesos = req.accesos;
     let data = jmy.context(req);
-    /* res.json(products); */
-   
-  envioMensaje.mostrar(firebaseApp);
-    
-    
-      data = jmy.context(req,{
-          css:[
-            {url:data.head.cdn+'assets/css/chat.css'},
-            {url:"//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"}
-          ],
-          js:[
-            {url:data.head.cdn+'../assets/js/jmy/jqchat.js'},
-            {url:"//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"},
-            {url:data.head.cdn+"assets/js/jmy/jmy_administrador_usuarios.js"},
-            {url:"//www.gstatic.com/firebasejs/5.10.0/firebase.js"}
-          ]
-        });
-        
-        
-       
-        console.log(foto_usr);
-        
-         
+    const id = req.params.peticion || '';
 
-    data.head.title = "chat";
-    res.render('chat',data);
+    data = jmy.context(req,{
+        css:[
+          {url:data.head.cdn+'assets/css/chat.css'},
+          {url:"//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"}
+        ],
+        js:[
+          {url:"//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"},
+          {url:"//www.gstatic.com/firebasejs/5.10.0/firebase.js"}
+        ]
+      });
+
+    console.log(foto_usr);
+    data.head['templet']='listaChat';
+    data.head.title = "Lista de conversaciones activas";
+
+
+    res.render(data.head.templet,data);
   } catch(error) {
-    console.log('Error detecting sentiment or saving message', error.message);
+    console.error('Error detecting sentiment or saving message', error);
     res.sendStatus(500);
   }
  

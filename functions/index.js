@@ -23,10 +23,8 @@ CONEXIÓN CON EL SOFTWARE O EL USO U OTRAS REPARACIONES EN EL SOFTWARE.
 'use strict';
 /////////////////////// CON FIREBASE
 
-
-
-const functions = require('firebase-functions');
-const admin = require('firebase-admin');
+const functions = require("firebase-functions");
+const firebase = require('./config/firebase.js');
 const language = require('@google-cloud/language');
 const client = new language.LanguageServiceClient();
 /////////////////////////////
