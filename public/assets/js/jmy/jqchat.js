@@ -1,33 +1,48 @@
 $(document).ready(function(){
+
+  window.onload = inicializar;
+  var refMensajes;
+  var fondoMensajes;
+
+
+  function inicializar() {
+    console.log("inicializando");
+    
+  
+   fondoMensajes = document.getElementById("fondo-mensaje");
+  }
+  
  
 $("#send").on('click', function () {
   var catchMensaje = $("#mensajeNuevo").val();
   var url= $("#url_base").val()+"chat";
   url = url.replace(" ","");
-  console.log(url);
-  
-  
    $.ajax({
     url:url,
     data:{mensaje:catchMensaje},
     method:"POST",
     success:function (res) {
       console.log("enviado");
-      
-      
     }
-  }).done(function (data) {
-    alert("el mensaje es :" + catchMensaje)
-  })
- 
-  
-   
+    }).done(function (data) {
+      alert("el mensaje es :" + catchMensaje)
+    })
     console.log(catchMensaje);
-
-   
-    
     
     });
+
+  /* function mostrarMensajesDeFirebase() {
+    refMensajes = firebase.database().ref().child("metadataChat");
+    var todosLosMensajes
+    refMensajes.on('value', function (snap) {
+      datos = snap.val();
+      for(var key in datos){
+        todosLosMensajes += "</br>"+ datos[key].d
+      }
+      fondoMensajes.innerHTML = todosLosMensajes;
+    })
+  } */
+
 
   });
 

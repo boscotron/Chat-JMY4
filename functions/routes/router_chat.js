@@ -19,6 +19,8 @@ const envioMensaje= require('../controller/cchat');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+const firebaseApp = firebase.initializeApp(functions.config().firebase);
+var db = firebaseApp.database(); 
 router.use(jmy.co);
 
 
@@ -47,9 +49,12 @@ const post = req.body;
 
 
    try {
-     console.log("mensaje",post);
-    envioMensaje.enviar(post);      
-     res.send(JSON.stringify({post:post}));
+     //post y acceso son datos de servidor 
+    //console.log("mensaje",post);
+    //console.log("acceso",acceso);
+    
+    envioMensaje.enviar(post,firebaseApp,db);  
+    //res.send(JSON.stringify({post:post}));
    } catch(error) {
      console.log('Error detecting sentiment or saving message', error.message);
      res.sendStatus(500);
@@ -65,7 +70,7 @@ router.get('/chat',jmy.sesion(jmy_connect.key), async(req, res)=>{
     let data = jmy.context(req);
     /* res.json(products); */
    
-  
+  envioMensaje.mostrar(firebaseApp);
     
     
       data = jmy.context(req,{
@@ -80,7 +85,8 @@ router.get('/chat',jmy.sesion(jmy_connect.key), async(req, res)=>{
             {url:"//www.gstatic.com/firebasejs/5.10.0/firebase.js"}
           ]
         });
-
+        
+        
        
         console.log(foto_usr);
         
